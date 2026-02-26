@@ -1,0 +1,19 @@
+<div class="container-xl px-3">
+  <header class="py-3">
+    <a class="blog-brand d-inline-flex align-items-center gap-3 text-decoration-none" href="{{ "/" | relURL }}">
+    <span class="brand-dots" aria-hidden="true"></span>
+    <span class="blog-title title-font fw-bolder text-body-emphasis">{{ .Site.Title | title }}</span>
+    </a>
+  </header>
+
+  <div class="nav-scroller py-1 mb-3 border-bottom">
+    <nav class="nav nav-underline justify-content-start gap-4 title-font fw-bolder">
+      <a class="nav-link link-body-emphasis" href="{{ "/" | relURL }}">Home</a>
+      <a class="nav-link link-body-emphasis" href="{{ "/posts" | relURL }}">All Posts</a>
+      <a class="nav-link link-body-emphasis" href="{{ "/about" | relURL }}">About</a>
+      <a class="nav-link link-body-emphasis" href="{{ "/authors" | relURL }}">Authors</a>
+      <a class="nav-link link-body-emphasis" href="{{ "/tags/frontline-letters" | relURL }}">Frontline Letters</a>
+      <a class="nav-link link-body-emphasis" href="{{ "/tags/mothers-of-kia-soldiers" | relURL }}">Mothers of KIA Soldiers</a>
+    </nav>
+  </div>
+</div>

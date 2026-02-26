@@ -1,0 +1,33 @@
+title = "Letters from War"
+
+[taxonomies]
+  tag   =  "tags"
+  author = "authors"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 10
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"
+    weight = 20
+
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "/posts"
+    weight = 30
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[module]
+  [[module.mounts]]
+    excludeFiles = 'admin/*'
+    source = 'static'
+    target = 'static'

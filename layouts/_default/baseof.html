@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="hugo-baseurl" content="{{ "/" | relURL }}">
+
+    <link rel="stylesheet" href="{{ "css/bootstrap.min.css" | relURL }}">
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+    <title>
+        {{ if .Title }}
+            {{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}
+        {{ else }}
+            {{ if not .IsHome }}{{ .Params.name }} | {{ end }}{{ .Site.Title }}
+        {{ end }}
+    </title>
+    <script src="{{ "js/search.js" | relURL }}" defer></script>
+    <script src="/js/equalizeHeights.js"></script>
+    <script src="/js/netlify-identity-widget.js"></script>
+    <script src="{{ "js/bootstrap.bundle.min.js" | relURL }}"></script>
+    <script src="{{ "js/article-hero.js" | relURL }}" defer></script>
+</head>
+
+<body data-build="{{ now.Unix }}">
+    <div class="d-flex flex-column min-vh-100">
+        {{ partial "navbar" . }}
+        <main class="flex-grow-1">
+            <div id="main-content">
+                {{ block "main" . }} {{ end }}
+            </div>
+        </main>
+        <footer id="footer">
+            {{ partial "footer" . }}
+        </footer>
+    </div>
+</body>
+</html>

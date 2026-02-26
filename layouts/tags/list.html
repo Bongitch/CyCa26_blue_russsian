@@ -1,0 +1,81 @@
+{{ define "main" }}
+    {{ if eq .RelPermalink "/tags/"}}
+        <div class="row flex-nowrap justify-content-center align-items-center mt-4 mb-3">
+            <div class="col-4 text-center">
+                <h1 class="text-body-emphasis title-font fw-bolder">{{ .Title }}</h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <form class="d-flex m-4 mb-6 col-6" id="search-tag-form">
+                    <input class="form-control me-2" id="search-tag-query" data-role="search-tag" name="query" type="search" placeholder="Search tag...">
+                    <!--
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    -->
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="flex-wrap gap-2 m-5">
+                <h3 id="tag-search-results">
+
+                </h3>
+            </div>
+        </div>
+
+        <div class="container" id="tag-container">
+            <div class="d-flex flex-wrap gap-2 m-5">
+                {{ range $.Site.Taxonomies.tags.ByCount }}
+                        <h3>
+                            <a class="badge bg-body-secondary text-body-emphasis" href="/tags/{{ .Name }}"># {{ .Name }} <small>{{ .Count }}</small></a>
+                        </h3>
+                {{ end }}
+            </div>
+        </div>
+
+    {{ else }}
+
+        <div class="row flex-nowrap justify-content-center align-items-center mt-4 mb-3">
+            <div class="col-4 text-center">
+                <h1 class="blog-header-logo text-body-emphasis text-decoration-none"> {{ .Title | replaceRE "-" " " }} </h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {{ range .Data.Pages }}
+                    <div class="col-md-12">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative hover-card">
+                            {{ if .Params.image }}
+                                {{ $imagePath := .Params.image }}
+                                {{ $fileNameWithExt := path.Base $imagePath }}
+                                {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                                <div class="col-md-3">
+                                    <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid">
+                                </div>
+                            {{ end }}
+                            <div class="col-md-9 d-flex flex-column justify-content-center p-3">
+                                <strong class="d-inline-block mb-2 text-truncate">{{ delimit .Params.tags " | " }}</strong>
+                                <h3 class="mb-0">
+                                    <a class="icon-link gap-1 icon-link-hover stretched-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                </h3>
+                                <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
+                                <p class="post-description-truncation">
+                                    {{ $content := .Plain }}
+                                    {{ $content = replaceRE `<\s*img[^>]*>` "" $content }}
+                                    {{ $content = replaceRE `^\s*$` "" $content }}
+                                    {{ $content = replaceRE `\n\s*\n` "<br>" $content }}
+                                    {{ $content }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+        </div>
+
+    {{ end }}
+
+{{ end }}

@@ -1,0 +1,98 @@
+{{ define "main" }}
+
+  <div class="row flex-nowrap justify-content-center align-items-center mt-4 mb-3">
+    <div class="col-4 text-center">
+      <h1 class="text-body-emphasis title-font fw-bolder">{{ .Title }}</h1>
+    </div>
+  </div>
+
+  {{ .Content }}
+  {{ if eq .RelPermalink "/authors/"}}
+    <div class="row justify-content-center text-font">
+      <form class="d-flex m-4 mb-6 col-4" id="search-author-form">
+        <input class="form-control me-2" id="search-author-query" data-role="search-author" type="search" placeholder="Search author..." aria-label="Search">
+      </form>
+    </div>
+
+    <div class="container text-font">
+      <div class="row" id="author-search-results">
+
+      </div>
+    </div>
+
+    {{ $authorCounts := dict }}
+    {{ $posts := where $.Site.RegularPages "Type" "posts" }}
+    {{ range $posts }}
+      {{ range .Params.authors }}
+        {{ $key := . }}
+        {{ $existingCount := default 0 (index $authorCounts $key) }}
+        {{ $newCount := add $existingCount 1 }}
+        {{ $authorCounts = merge $authorCounts (dict $key $newCount) }}
+      {{ end }}
+    {{ end }}
+
+    <div class="container text-font" id="author-container">
+      <div class="row">
+        {{ $authorList := slice }}
+        {{ range $key, $value := $authorCounts }}
+          {{ $authorList = $authorList | append (dict "name" $key "count" $value) }}
+        {{ end }}
+        {{ $sortedAuthors := sort $authorList "count" "desc" }}
+
+        {{ range $sortedAuthors }}
+          <div class="col-md-6 mb-4">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative hover-card">
+              <div class="col-md-4 d-flex align-items-center justify-content-center p-3 author-image-container">
+                {{ $authorName := .name }}
+                {{ range where $.Site.RegularPages "Type" "authors" }}
+                  {{ if in .Params.name $authorName }}
+                    {{ if .Params.avatar }}
+                      <img src="{{ .Params.avatar }}" alt="{{ $authorName }}" class="img-fluid">
+                    {{ else }}
+                      <div class="avatar">
+                        <div class="user-icon"><span></span>
+                        </div>
+                      </div>
+                    {{ end }}
+                  {{ end }}
+                {{ end }}
+              </div>
+              <div class="col-md-8 d-flex flex-column justify-content-center p-4">
+                <h3 class="mb-0">
+                  <a class="icon-link gap-1 icon-link-hover stretched-link" href="{{ "authors/" | relURL }}{{ .name | urlize }}">{{ .name }}</a>
+                </h3>
+                <strong class="mt-1">Published posts: {{ .count }}</strong>
+                <p class="post-description-truncation">
+                  {{ range where $.Site.RegularPages "Type" "authors" }}
+                    {{ if in .Params.name $authorName }}
+                      {{ .Params.description }}
+                    {{ end }}
+                  {{ end }}
+                </p>
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ else }}
+    <div class="container text-font">
+      <div class="row">
+        {{ range .Data.Pages }}
+          <div class="col-md-3">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative hover-card">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-truncate">{{ delimit .Params.tags " | " }}</strong>
+                <h3 class="mb-0">
+                  <a class="icon-link gap-1 icon-link-hover stretched-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </h3>
+                <div class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</div>
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+
+{{ end }}

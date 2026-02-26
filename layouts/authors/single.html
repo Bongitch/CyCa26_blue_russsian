@@ -1,0 +1,55 @@
+{{ define "main" }}
+
+    {{ $author := .Params.name }}
+    {{ $description := .Params.description }}
+
+    <div class="container">
+        <div class="col-md-12">
+            <div class="row flex-nowrap justify-content-center align-items-center mt-4 mb-3">
+                <div class="col-4 text-center">
+                    <h1 class="text-body-emphasis title-font fw-bolder">{{ $author }}</h1>
+                </div>
+            </div>
+
+            <div>
+                <p>{{ .Params.description }}</p>
+            </div>
+
+            {{ $posts := where $.Site.RegularPages "Type" "posts" }}
+            {{ range $posts }}
+                {{ if in .Params.authors $author }}
+                    {{ $postTitle := .Title }}
+                    {{ range where (where $.Site.RegularPages "Type" "posts") ".Params.title" $postTitle }}
+                        <div class="col-md-12">
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative hover-card">
+                                {{ if .Params.image }}
+                                    {{ $imagePath := .Params.image }}
+                                    {{ $fileNameWithExt := path.Base $imagePath }}
+                                    {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                                    <div class="col-md-3">
+                                        <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid">
+                                    </div>
+                                {{ end }}
+                                <div class="col-md-9 d-flex flex-column justify-content-center p-3">
+                                    <strong class="d-inline-block mb-2 text-truncate">{{ delimit .Params.tags " | " }}</strong>
+                                    <h3 class="mb-0">
+                                        <a class="icon-link gap-1 icon-link-hover stretched-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                    </h3>
+                                    <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
+                                    <p class="post-description-truncation">
+                                        {{ $content := .Plain }}
+                                        {{ $content = replaceRE `<\s*img[^>]*>` "" $content }}
+                                        {{ $content = replaceRE `^\s*$` "" $content }}
+                                        {{ $content = replaceRE `\n\s*\n` "<br>" $content }}
+                                        {{ $content }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+        </div>
+    </div>
+
+{{ end }}

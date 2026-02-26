@@ -1,0 +1,78 @@
+# when using the default proxy server port
+local_backend: true
+
+backend:
+  name: git-gateway
+  branch: master
+media_folder: "static/images" # Folder where user uploaded files should go
+public_folder: "/images"
+collections:
+  - name: "posts" # Used in routes, e.g., /admin/collections/post
+    label: "Posts" # Used in the UI
+    folder: "content/posts" # The path to the folder where the documents are stored
+    create: true # Allow users to create new documents in this collection
+    fields: # The fields for each document, usually in front matter
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Authors", name: "authors", widget: "relation", collection: "authors", search_fields: [ "name" ], value_field: "name", display_fields: [ "name" ], multiple: true }
+      - { label: "Tags", name: "tags", widget: "list" }
+      - { label: "Publish Date", name: "date", widget: "hidden", default: "{{now}}", format: "YYYY-MM-DDTHH:mm:ss+02:00" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "authors"
+    label: "Authors"
+    folder: "content/authors"
+    create: true
+    slug: "{{ name | slugify }}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Avatar", name: "avatar", widget: "image", required: false }
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "featured_and_recent_posts"
+        file: "content/settings/index.md"
+        label: "Featured and Recent Posts"
+        fields:
+          - label: "Featured Posts"
+            name: "featured_posts"
+            widget: "list"
+            max: 3
+            min: 3
+            add_to_top: true
+            allow_add: false
+            fields:
+              - { label: "Post", name: "post", widget: "relation", collection: "posts", search_fields: [ "title" ], value_field: "title", display_fields: [ "title" ], required: true }
+              - { label: "Rank", name: "rank", widget: "hidden", min: 1, max: 3, required: true }
+          - label: "Recent Posts"
+            name: "recent_posts"
+            widget: "list"
+            max: 3
+            min: 3
+            add_to_top: true
+            allow_add: false
+            fields:
+              - { label: "Post", name: "post", widget: "relation", collection: "posts", search_fields: [ "title" ], value_field: "title", display_fields: [ "title" ], required: true }
+              - { label: "Rank", name: "rank", widget: "hidden", min: 1, max: 3, required: true }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "content/_index.md"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - label: "Article"
+            name: "article"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+      - file: "content/about/index.md"
+        label: "About"
+        name: "about"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }

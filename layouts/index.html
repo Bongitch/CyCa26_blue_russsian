@@ -1,0 +1,181 @@
+{{ define "main" }}
+<main class="container-xl text-font my-4">
+
+    {{/* ------------------------------------------------------------------ */}}
+    {{/* Compute the 2 most popular tags by post count                       */}}
+    {{/* ------------------------------------------------------------------ */}}
+    {{ $allPosts := where .Site.RegularPages "Type" "posts" }}
+
+    {{/* Build a map of tag -> count */}}
+    {{ $tagCounts := dict }}
+    {{ range $allPosts }}
+        {{ range .Params.tags }}
+            {{ $tag := . }}
+            {{ $count := add 1 (index $tagCounts $tag | default 0) }}
+            {{ $tagCounts = merge $tagCounts (dict $tag $count) }}
+        {{ end }}
+    {{ end }}
+
+    {{/* Sort tags by count descending — Hugo lacks a direct dict sort,      */}}
+    {{/* so we collect into a slice of pages (one per tag taxonomy entry)    */}}
+    {{/* and use the built-in taxonomy pages sorted by weight/count.         */}}
+    {{/* Simpler: use .Site.Taxonomies.tags which is already sorted.         */}}
+    {{ $sortedTags := slice }}
+    {{ range $name, $pages := .Site.Taxonomies.tags }}
+        {{ $sortedTags = $sortedTags | append (dict "name" $name "count" (len $pages)) }}
+    {{ end }}
+    {{/* Sort descending by count using Hugo's sort */}}
+    {{ $sortedTags = sort $sortedTags "count" "desc" }}
+
+    {{ $popularTag1 := "" }}
+    {{ $popularTag2 := "" }}
+    {{ if ge (len $sortedTags) 1 }}
+        {{ $popularTag1 = (index $sortedTags 0).name }}
+    {{ end }}
+    {{ if ge (len $sortedTags) 2 }}
+        {{ $popularTag2 = (index $sortedTags 1).name }}
+    {{ end }}
+
+    {{/* ------------------------------------------------------------------ */}}
+    {{/* Hero row: Latest list (left) + most recent post hero card (right)  */}}
+    {{/* ------------------------------------------------------------------ */}}
+    {{ $heroPost := first 1 ($allPosts.ByDate.Reverse) }}
+    {{ $heroTitle := "" }}
+    {{ range $heroPost }}{{ $heroTitle = .Title }}{{ end }}
+
+    <div class="row g-4 align-items-start home-hero-row">
+
+        <!-- Latest sidebar -->
+        <aside class="col-lg-3 order-2 order-lg-1">
+            <h2 class="home-latest-title title-font mb-2">Latest</h2>
+            <ul class="list-unstyled mb-0 home-latest">
+                {{ $latest := first 7 ($allPosts.ByDate.Reverse) }}
+                {{ range $i, $p := $latest }}
+                <li class="home-latest-item py-3 {{ if gt $i 0 }}border-top{{ end }}">
+                    {{ with $p.Params.tags }}
+                    <div class="home-kicker">{{ upper (index . 0) }}</div>
+                    {{ end }}
+                    <a href="{{ $p.Permalink }}" class="home-latest-link title-font">{{ $p.Title }}</a>
+                    <div class="home-latest-meta">• {{ $p.Date.Format "Jan 2, 2006" }}</div>
+                </li>
+                {{ end }}
+            </ul>
+        </aside>
+
+        <!-- Hero card -->
+        <section class="col-lg-9 order-1 order-lg-2">
+            {{ range $heroPost }}
+            <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none">
+                <article class="home-hero-card">
+                    {{ if .Params.image }}
+                    {{ $imagePath := .Params.image }}
+                    {{ $fileNameWithExt := path.Base $imagePath }}
+                    {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                    <div class="home-hero-media">
+                        <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
+                    </div>
+                    {{ end }}
+
+                    <div class="home-hero-body p-4">
+                        {{ with .Params.tags }}
+                        <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
+                        {{ end }}
+
+                        <h1 class="home-hero-title title-font mb-3">{{ .Title }}</h1>
+
+                        <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
+
+                        <p class="home-hero-excerpt">
+                            {{ .Summary | plainify }}
+                        </p>
+
+                        <span class="home-feature-desc-link">Read more →</span>
+                    </div>
+                </article>
+            </a>
+            {{ end }}
+        </section>
+
+    </div>
+
+    {{/* ------------------------------------------------------------------ */}}
+    {{/* Tag sections: 2 most popular tags                                   */}}
+    {{/* Each section: 1 lead card (title only) + 3 tiles beneath (title only) */}}
+    {{/* ------------------------------------------------------------------ */}}
+
+    {{ range $idx, $tag := slice $popularTag1 $popularTag2 }}
+    {{ if $tag }}
+
+    {{ $tagPosts := first 4 ((where $allPosts "Params.tags" "intersect" (slice $tag)).ByDate.Reverse) }}
+    {{ $tagLead  := first 1 $tagPosts }}
+    {{ $tagRest  := after 1 $tagPosts }}
+
+    <section class="home-section mt-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <a href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" class="home-section-title-link text-decoration-none">
+                <h2 class="home-section-title title-font mb-0">{{ $tag | humanize | title }}</h2>
+            </a>
+            <a class="home-section-arrow" href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" aria-label="View more"></a>
+        </div>
+
+        {{/* Lead card */}}
+        {{ range $tagLead }}
+        <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none">
+            <article class="home-hero-card">
+                {{ if .Params.image }}
+                {{ $imagePath := .Params.image }}
+                {{ $fileNameWithExt := path.Base $imagePath }}
+                {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                <div class="home-hero-media">
+                    <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
+                </div>
+                {{ end }}
+
+                <div class="home-hero-body p-4">
+                    <div class="home-kicker mb-2">{{ upper $tag }}</div>
+
+                    <h2 class="home-hero-title title-font mb-3">{{ .Title }}</h2>
+
+		    <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
+
+                    <p class="home-hero-excerpt">
+                        {{ .Summary | plainify }}
+                    </p>
+
+                    <span class="home-feature-desc-link">Read more →</span>
+                </div>
+            </article>
+        </a>
+        {{ end }}
+
+        {{/* 3 tiles beneath */}}
+        <div class="row g-4 mt-3">
+            {{ range $tagRest }}
+            <div class="col-12 col-md-6 col-lg-4">
+                <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block h-100">
+                    <article class="home-tile h-100">
+                        {{ if .Params.image }}
+                        {{ $imagePath := .Params.image }}
+                        {{ $fileNameWithExt := path.Base $imagePath }}
+                        {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                        <div class="home-tile-media">
+                            <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
+                        </div>
+                        {{ end }}
+
+                        <div class="home-tile-body pt-3 px-3 pb-3">
+                            <div class="home-kicker mb-2">{{ upper $tag }}</div>
+                            <h3 class="title-font home-tile-title mb-0">{{ .Title }}</h3>
+                        </div>
+                    </article>
+                </a>
+            </div>
+            {{ end }}
+        </div>
+    </section>
+
+    {{ end }}
+    {{ end }}
+
+</main>
+{{ end }}

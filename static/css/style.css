@@ -1,0 +1,1055 @@
+/* =========================================================
+   EXERCISE watermark
+   ========================================================= */
+
+body::before {
+    content: "EXERCISE";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 20vw;
+    font-weight: bold;
+    color: rgba(255, 0, 0, 0.08);
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Global variables
+   ========================================================= */
+
+:root{
+  --nav-accent: #1d4ed8;  /* Blue hover bar / kicker */
+  --nav-text:   #0b0f19;  /* Near-black */
+  --nav-border: #e5e7eb;  /* Light border */
+  --accent-green: #0f5132;/* Dark green used for arrows */
+}
+
+
+/* =========================================================
+   Fonts
+   ========================================================= */
+
+@font-face{
+  font-family: "Yeseva One";
+  font-style: normal;
+  font-weight: 400;
+  src: local("/fonts/YesevaOne-Regular.woff2");
+}
+
+@font-face{
+  font-family: "Times New Roman";
+  font-style: normal;
+  font-weight: 400;
+  src: local("/fonts/OPTITimes-Roman.otf");
+}
+
+.title-font{ font-family: "Yeseva One"; }
+.text-font{  font-family: "Times New Roman"; }
+
+
+/* =========================================================
+   Navbar (Bootstrap markup in layouts/partials/navbar.html)
+   ========================================================= */
+
+/* Brand link should not change on hover */
+.blog-brand:hover,
+.blog-brand:focus{
+  text-decoration: none;
+}
+
+.blog-title{
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: 800;
+  font-size: 2.25rem;   /* smaller than the initial version */
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #000;
+}
+
+/* Dot grid icon next to the brand */
+.brand-dots{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background: radial-gradient(circle, #000 2px, transparent 3px) 0 0 / 6px 6px;
+  border-radius: 4px;
+}
+
+/* Navigation strip */
+.nav-scroller{
+  background: #fff;
+  border-bottom-color: var(--nav-border) !important;
+}
+
+.nav-scroller .nav.nav-underline .nav-link{
+  color: var(--nav-text) !important;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+
+  padding: 0.6rem 0.1rem 1rem;
+  position: relative;
+
+  text-decoration: none;
+}
+
+/* Hover underline + blue bar */
+.nav-scroller .nav.nav-underline .nav-link:hover{
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.nav-scroller .nav.nav-underline .nav-link::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 4px;
+  background: var(--nav-accent);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 160ms ease;
+}
+
+.nav-scroller .nav.nav-underline .nav-link:hover::after{
+  transform: scaleX(1);
+}
+
+@media (max-width: 768px){
+  .blog-title{ font-size: 1.75rem; }
+}
+
+
+/* =========================================================
+   Posts (lists + search results)
+   ========================================================= */
+
+.post-description-truncation{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  line-clamp: 3;            /* for browsers that support it */
+  box-orient: vertical;     /* for older implementations */
+}
+
+/* Post cards – uniform square image + black title
+   .hover-card IS the .row.g-0 element, so image col is a direct child */
+.hover-card > .col-md-3{
+  flex-shrink: 0;
+  width: 25%;          /* matches Bootstrap col-md-3 */
+  aspect-ratio: 1 / 1; /* square that scales with card width */
+  overflow: hidden;
+  display: flex;
+}
+
+.hover-card > .col-md-3 > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Title link: black, no underline by default, underline on hover */
+.hover-card h3 a{
+  color: #000 !important;
+  text-decoration: none !important;
+}
+
+.hover-card h3 a:hover{
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+/* search-results cards share the same structure */
+#search-results .row.g-0 > .col-md-3{
+  flex-shrink: 0;
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+}
+
+#search-results .row.g-0 > .col-md-3 > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Small screens: stack image above text */
+@media (max-width: 767.98px){
+  .hover-card,
+  #search-results .row.g-0{
+    flex-direction: column;
+  }
+
+  .hover-card > .col-md-3,
+  #search-results .row.g-0 > .col-md-3{
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    max-width: 100%;
+  }
+}
+
+
+/* =========================================================
+   Authors (authors list + search)
+   ========================================================= */
+
+/* Hover shadow shared by author and tag list cards */
+.hover-card{
+  transition: box-shadow 0.18s ease;
+}
+
+.hover-card:hover{
+  box-shadow: 0 6px 28px rgba(0,0,0,0.10) !important;
+}
+
+.author-image-container{
+  width: 13em;
+  height: 13em;
+  overflow: hidden;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.author-image-container img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Fallback avatar */
+.avatar{
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-icon{
+  font-size: 1.6em;   /* changing font size changes the icon scale */
+  width: 6em;
+  height: 6em;
+  aspect-ratio: 1 / 1;
+
+  border-radius: 50%;
+  border: 1px solid grey;
+  background: none;
+  box-sizing: border-box;
+
+  position: relative;
+  display: block;
+}
+
+.user-icon::before{
+  content: "";
+  width: 2em;
+  height: 2em;
+  background: grey;
+  border-radius: 50%;
+
+  position: absolute;
+  left: 50%;
+  top: 0.8em;
+  transform: translateX(-50%);
+}
+
+.user-icon::after{
+  content: "";
+  width: 4em;
+  height: 2em;
+  background: grey;
+  border-radius: 2em 2em 0 0;
+
+  position: absolute;
+  left: 50%;
+  top: 3.0em;
+  transform: translateX(-50%);
+}
+
+/* Author cards (search results) */
+#author-search-results .row.g-0{
+  align-items: stretch;
+}
+
+#author-search-results .row.g-0 > .col-md-4{
+  flex-shrink: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+#author-search-results .row.g-0 > .col-md-4 > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (max-width: 767.98px){
+  #author-search-results .row.g-0{
+    flex-direction: column;
+  }
+
+  #author-search-results .row.g-0 > .col-md-4{
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #author-search-results .row.g-0 > .col-md-4 > img{
+    height: 200px;
+  }
+}
+
+/* Keep avatar circle stable */
+@media (max-width: 1200px){
+  #author-container .col-md-6,
+  #author-search-results .col-md-6{
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+
+/* =========================================================
+   Homepage: shared typography
+   ========================================================= */
+
+.home-kicker{
+  color: var(--nav-accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.home-tile-media{
+  border-radius: 0;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   Homepage: Latest sidebar
+   ========================================================= */
+
+.home-hero-row{
+  margin-bottom: 1rem;
+}
+
+.home-latest-title{
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.home-latest-item{
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.home-latest-link{
+  display: block;
+  color: #111;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 0.2rem;
+}
+
+.home-latest-link:hover{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-latest-meta{
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #6c757d;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   Homepage: hero — most-recent article card
+   ========================================================= */
+
+.home-hero-link{
+  color: inherit;
+}
+
+.home-hero-link:hover .home-hero-title{
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.home-hero-card{
+  background: var(--bs-body-bg, #fff);
+  border: 1px solid var(--nav-border);
+  border-radius: 0.375rem !important;
+  overflow: hidden;
+  transition: box-shadow 0.18s ease;
+}
+
+.home-hero-link:hover .home-hero-card{
+  box-shadow: 0 6px 28px rgba(0,0,0,0.10);
+}
+
+.home-hero-media{
+  width: 100%;
+  height: clamp(300px, 42vh, 520px);
+  overflow: hidden;
+}
+
+.home-hero-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 0.375rem 0.375rem 0 0 !important;
+}
+
+.home-hero-body{
+  width: 100%;
+}
+
+.home-hero-title{
+  font-weight: 900 !important;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  margin-bottom: 0.75rem;
+  color: #111 !important;
+}
+
+.home-hero-excerpt{
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.home-feature-desc-link{
+  font-weight: 700;
+  color: var(--nav-accent);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px){
+  .home-hero-media{
+    height: clamp(200px, 38vw, 320px);
+  }
+  .home-hero-title{
+    font-size: clamp(1.55rem, 5vw, 2rem);
+  }
+}
+
+
+/* =========================================================
+   Homepage: bottom 3 tiles
+   ========================================================= */
+
+.home-bottom{
+  margin-top: 1.25rem !important;
+}
+
+/* Clickable tile wrapper */
+.home-tile-link{
+  color: inherit;
+}
+
+.home-tile-link:hover .home-tile-title{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-tile{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--nav-border);
+  border-radius: 0.375rem !important;
+  overflow: hidden;
+  transition: box-shadow 0.18s ease;
+}
+
+.home-tile-link:hover .home-tile{
+  box-shadow: 0 4px 18px rgba(0,0,0,0.09);
+}
+
+.home-tile-media{
+  display: block;
+  width: 100%;
+  height: 180px;
+  flex-shrink: 0;
+}
+
+.home-tile-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0.375rem 0.375rem 0 0 !important;
+}
+
+.home-tile-body{
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.home-tile-title{
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #111 !important;
+}
+
+@media (max-width: 992px){
+  .home-tile-media{ height: 160px; }
+  .home-tile-title{ font-size: 1.1rem !important; }
+}
+
+
+/* =========================================================
+   Homepage: tag sections (2 most popular tags)
+   ========================================================= */
+
+.home-section.mt-5{
+  margin-top: 2.5rem !important;
+}
+
+.home-section-title{
+  font-weight: 900 !important;
+  font-size: 1.55rem !important;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #111 !important;
+}
+
+.home-section-title-link{
+  color: inherit;
+}
+
+.home-section-title-link:hover .home-section-title{
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+/* "View more" arrow */
+.home-section-arrow{
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 999px;
+  background: var(--accent-green);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.home-section-arrow::after{
+  content: "→";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.home-section-arrow:hover{
+  filter: brightness(1.05);
+}
+
+/* Tag lead card — styled to match the hero section */
+.home-tag-lead{
+  background: var(--bs-body-bg, #fff);
+  border: 1px solid var(--nav-border);
+  border-radius: 0 !important;
+  overflow: hidden;
+  transition: box-shadow 0.18s ease;
+}
+
+a:hover .home-tag-lead{
+  box-shadow: 0 6px 28px rgba(0,0,0,0.10);
+}
+
+a:hover .home-tag-lead-title{
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+.home-tag-lead-media{
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0;
+  height: clamp(300px, 42vh, 520px);
+}
+
+.home-tag-lead-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 0 !important;
+}
+
+.home-tag-lead-title{
+  font-weight: 900 !important;
+  font-size: clamp(2rem, 3.5vw, 3.2rem) !important;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: #111 !important;
+  margin-bottom: 0.75rem;
+}
+
+/* Excerpt truncation to match hero */
+.home-tag-lead-excerpt{
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+@media (max-width: 992px){
+  .home-tag-lead-media{ height: clamp(200px, 38vw, 320px); }
+  .home-tag-lead-title{ font-size: clamp(1.55rem, 5vw, 2rem) !important; }
+}
+
+/* ========================================================================
+   SINGLE POST
+   ======================================================================== */
+
+.under-nav{
+  background: #fff;
+}
+
+.under-nav .under-nav-inner{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: 700;
+  border-top: 1px solid var(--nav-border);
+  border-bottom: 1px solid var(--nav-border);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.under-nav .under-nav-home{
+  text-decoration: none;
+  color: #222;
+  font-size: 20px;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.under-nav .under-nav-home:hover{
+  background: #f3f4f6;
+}
+
+.under-nav .under-nav-sep{ opacity: .6; }
+
+.under-nav .under-nav-link{
+  text-decoration: none;
+  color: #222;
+}
+
+.under-nav .under-nav-link:hover{
+  text-decoration: underline;
+}
+
+.single-article .single-hero{ align-items: flex-start; }
+
+.single-article .article-header{
+  padding-bottom: 18px;
+}
+
+.single-article .article-title{
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.03;
+  font-size: clamp(2rem, 3.2vw, 3.1rem);
+  max-width: 26ch;
+}
+
+.single-article .article-dek{
+  color: #6c757d;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  max-width: 60ch;
+}
+
+.single-article .article-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid var(--nav-border);
+  margin-top: 18px;
+}
+
+.single-article .article-byline,
+.single-article .article-date{
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.single-article .article-byline-name{
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+
+.single-article .article-byline-name:hover{
+  text-decoration: underline;
+}
+
+.single-article .article-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.single-article .article-tag{
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--nav-border);
+  border-radius: 999px;
+  color: #222;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.single-article .article-tag:hover{
+  border-color: #cfd4da;
+}
+
+.single-article .article-figure{
+  margin: 18px 0 0;
+}
+
+.single-article .article-media img{
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.single-article .article-caption{
+  font-size: 11px;
+  color: #6c757d;
+  margin-top: 8px;
+  text-align: right;
+  font-style: italic;
+}
+
+.single-article .article-body{
+  margin-top: 22px;
+  max-width: 74ch;
+  line-height: 1.8;
+  color: #1f2328;
+}
+
+.single-article .article-body img{
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.single-article .article-body a{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-latest{
+  border-left: 1px solid var(--nav-border);
+  padding-left: 28px;
+}
+
+@media (max-width: 991.98px){
+  .article-latest{
+    border-left: 0;
+    padding-left: 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--nav-border);
+  }
+}
+
+@media (min-width: 992px){
+  .article-latest{
+    position: sticky;
+    top: 96px;
+  }
+}
+
+.article-latest-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.article-latest-title{
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.article-latest-arrow{
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--brand-green);
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.article-latest-arrow::before{
+  content: "→";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  transform: translateX(1px);
+}
+
+.article-latest-list{
+  margin-top: 8px;
+}
+
+.article-latest-item{
+  padding: 18px 0;
+}
+
+.article-latest-link{
+  display: block;
+  color: #111;
+  text-decoration: none;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.article-latest-link:hover{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-latest-meta{
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #6c757d;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* Make the home icon readable at a glance */
+.under-nav-home{
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Hero image: cap height to viewport, preserve aspect ratio and avoid rounding */
+.single-article .article-hero-media{
+  background: rgba(0,0,0,.03);
+  overflow: hidden;
+  border-radius: 0;
+  height: clamp(260px, 46vh, 520px);
+}
+
+.single-article .article-hero-img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+/* Portrait hero images: don't crop or stretch; let text wrap around */
+@media (min-width: 992px){
+  .single-article .article-figure.is-portrait{
+    float: left;
+    width: min(44%, 420px);
+    margin: 22px 1.75rem 1rem 0;
+  }
+
+  .single-article .article-figure.is-portrait .article-hero-media{
+    height: auto;
+    max-height: 65vh;
+    overflow: visible;
+  }
+
+  .single-article .article-figure.is-portrait .article-hero-img{
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain;
+  }
+
+  .single-article .article-figure.is-portrait .article-caption{
+    text-align: left;
+  }
+}
+
+.single-article .article-body{
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: rgba(0,0,0,.85);
+  max-width: none;
+}
+
+/* If the hero image becomes a floated portrait, ensure the body clears it */
+.single-article .article-body::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.single-article .article-byline-name{
+  color: var(--nav-blue);
+}
+
+.home-feature-desc-text{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* number of lines */
+  overflow: hidden;
+
+  line-height: 1.55;      /* keep stable line height */
+  max-height: calc(1.55em * 4);
+}
+
+/* =========================================================
+   Homepage hero: fix image stretching + vertical centering
+   ========================================================= */
+
+/* Make both columns match height so the right block can center vertically */
+.home-feature-wide .row.g-4{
+  align-items: stretch !important;
+}
+
+/* Let the hero image behave naturally again (no forced box height, no max width) */
+.home-feature-wide .home-feature-media{
+  max-width: none;          /* remove the 640px cap */
+  margin-top: 0;            /* remove the extra top gap */
+  height: auto;             /* override the clamp height */
+}
+
+/* Preserve aspect ratio (no distortion) and allow full width */
+.home-feature-wide .home-feature-media img{
+  width: 100%;
+  height: auto;             /* override fixed height */
+  object-fit: initial;      /* not needed when height:auto, but explicit */
+  display: block;
+}
+
+/* Ensure the description block really centers vertically */
+.home-feature-wide .home-feature-desc{
+  width: 100%;
+  padding-top: 0;           /* remove the "push down" */
+  padding-bottom: 0;
+}
+
+
+/* ===========================================================
+   SINGLE POST: hero image wrap + max height
+   =========================================================== */
+
+/* Make sure floats never overlap content below the article body */
+.single-article .article-body::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Default (mobile/tablet): normal block hero */
+.single-article .article-figure-wrap{
+  float: none;
+  width: 100%;
+}
+
+/* Desktop: float left, cap height to half viewport, let text wrap */
+@media (min-width: 992px){
+  .single-article .article-figure-wrap{
+    width: min(46%, 420px);
+    margin-top: 6px; /* slightly tighter than default */
+  }
+
+  .single-article .article-figure-wrap .article-media{
+    display: block;
+  }
+
+  /* If image would be taller than 50vh, it gets capped; otherwise unchanged */
+  .single-article .article-figure-wrap img{
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;  /* never stretch/crop portrait images */
+    display: block;
+  }
+}
+
+/* You said: hero image should not have rounded corners */
+.single-article .article-figure-wrap img{
+  border-radius: 0 !important;
+}

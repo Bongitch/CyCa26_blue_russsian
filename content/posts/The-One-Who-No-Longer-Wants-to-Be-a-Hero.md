@@ -1,0 +1,12 @@
+---
+title: "The One Who No Longer Wants to Be a Hero"
+authors:
+  - Ivan Novikov
+tags:
+  - Frontline-Letters
+date: 2026-02-11T14:55:53+01:00
+image: /images/Ivan.jpg
+---
+My name is Ivan Novikov, I’m 51 years old and I come from Khabarovsk. My whole life I’ve been fixing cars — UAZs, KamAZs, then those Japanese used imports that came through the port. I lived alone in a panel block on the edge of town, garage on the ground floor, radio, beer with the guys after work. No wife, no kids. It was enough for me.I had a younger brother, Sasha. Ten years younger. He was full of life — laughed out loud, drank with us at the pub by the River, played old songs on the guitar and said: “Bro, when I get some money, we’ll buy an old Ural together and drive to Baikal.” Then the war came. Sasha went voluntarily — said he “had to defend Russia.” I tried to talk him out of it. I told him: “Sasha, this isn’t our war. It’s someone else’s war.” He didn’t listen.He was killed last summer near Robotyne. Just a notification arrived, and a coffin. We buried him in the cemetery outside town, next to Dad. Since then I wear his watch on my wrist. Every day I wind it, as if he might still show up.Now it’s my turn. I’ve been on the front for over a year, in a repair company. I fix Urals, KamAZs, generators — same mess as back home, only instead of oil there’s blood and mud. I hate this war. I hate it more every day. I hate how the commanders tell us “hold on, guys, victory is close” when I see boys dying who should be alive. I hate how we’re turned into killers and victims at the same time. I hate that I’m here because of something I don’t understand and never will.I want to go home.I want to sit in our old pub by the River, drink beer with the guys from the workshop, listen to someone play “Kalinka” or “Moscow Nights” on the guitar, laugh at stupid jokes and pretend life is still the same. I want someone to pour me another half-liter and say: “Come on, Vanya, let’s leave it for today.” I want no one to call me “brother,” because that word now hurts like a knife.But Sasha won’t come back. And I’m still here. Fixing another engine that a drone will blow up in a week anyway. And then another. And another.This war took my brother from me. It took my home. It took my taste for beer. And I don’t want to be part of anything big anymore. I just want to be home. Sitting in the pub. And staying silent about all of this.Ivan Novikov
+somewhere in Donbas, February 2026
+

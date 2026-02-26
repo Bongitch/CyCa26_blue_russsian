@@ -1,0 +1,28 @@
+{{- $posts := where .Site.RegularPages "Type" "posts" -}}
+{{- $authors := where .Site.RegularPages "Type" "authors" -}}
+[
+{{- range $index, $post := $posts -}}
+{{- if $index }},{{ end -}}
+{
+"type": "post",
+"title": {{ $post.Title | jsonify }},
+"authors": {{ $post.Params.authors | jsonify }},
+"tags": {{ $post.Params.tags | jsonify }},
+"date": {{ $post.Date | jsonify }},
+"image": {{ $post.Params.image | default "" | relURL | jsonify }},
+"body": {{ $post.Plain | jsonify }},
+"permalink": {{ $post.RelPermalink | jsonify }}
+}
+{{- end -}}
+{{- if $posts }} ,{{ end -}}
+{{- range $index, $author := $authors -}}
+{{- if $index }},{{ end -}}
+{
+"type": "author",
+"name": {{ $author.Params.name | jsonify }},
+"description": {{ $author.Params.description | jsonify }},
+"avatar": {{ $author.Params.avatar | default "" | relURL | jsonify }},
+"permalink": {{ $author.RelPermalink | jsonify }}
+}
+{{- end -}}
+]

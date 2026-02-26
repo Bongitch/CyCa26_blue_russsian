@@ -1,0 +1,85 @@
+{{ define "main" }}
+
+{{/* ---------------------------------------------------------
+Single post layout (Entrepreneur-like article layout)
+- Under-nav breadcrumb (Home / TAG / TAG)
+- Main article
+- Latest sidebar
+--------------------------------------------------------- */}}
+
+{{ $tags := .Params.tags | default (slice) }}
+
+{{ $posts := (where .Site.RegularPages "Type" "posts").ByDate.Reverse }}
+{{ $latestPosts := first 3 (where $posts "RelPermalink" "ne" .RelPermalink) }}
+
+<!-- Under-nav tags -->
+<div class="under-nav">
+	<div class="container-xl px-3">
+		<div class="under-nav-inner">
+			{{ range $i, $tag := $tags }}
+			{{ if gt $i 0 }}<span class="under-nav-sep">|</span>{{ end }}
+			<a class="under-nav-link" href="{{ "/tags/" | relURL }}{{ $tag | urlize }}">{{ upper $tag }}</a>
+			{{ end }}
+		</div>
+	</div>
+</div>
+
+<main class="container-xl text-font my-4 single-article">
+	<div class="row g-5 single-hero">
+		<!-- Article -->
+		<article class="col-lg-8">
+			<header class="article-header">
+				<h1 class="article-title title-font mb-3">{{ .Title }}</h1>
+
+				<div class="article-meta">
+					{{ with .Params.authors }}
+					<div class="article-byline">
+						BY <a class="article-byline-name" href="{{ "/authors/" | relURL }}{{ index . 0 | urlize }}">{{ upper (index . 0) }}</a>
+					</div>
+					{{ end }}
+
+					<div class="article-date">
+						{{ .Date.Format "Jan 2, 2006" }}
+					</div>
+				</div>
+			</header>
+
+			{{ if .Params.image }}
+			{{ $imagePath := .Params.image }}
+			{{ $fileNameWithExt := path.Base $imagePath }}
+			{{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+
+			<!-- Floats on lg+ so the article text can wrap around it -->
+			<figure class="article-figure article-figure-wrap float-lg-start me-lg-4 mb-3">
+				<a href="{{ .Permalink }}" class="article-media d-block">
+					<img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid">
+				</a>
+				<figcaption class="article-caption">{{ $fileName }}</figcaption>
+			</figure>
+			{{ end }}
+
+			<div class="article-body">
+				{{ .Content }}
+			</div>
+		</article>
+
+		<!-- Latest sidebar -->
+		<aside class="col-lg-4 article-latest">
+			<div class="article-latest-head">
+				<h2 class="article-latest-title title-font mb-0">Latest</h2>
+				<a class="article-latest-arrow" href="{{ "/posts" | relURL }}" aria-label="All posts"></a>
+			</div>
+
+			<div class="article-latest-list">
+				{{ range $i, $p := $latestPosts }}
+				<div class="article-latest-item {{ if gt $i 0 }}border-top{{ end }}">
+					<a class="article-latest-link title-font" href="{{ $p.Permalink }}">{{ $p.Title }}</a>
+					<div class="article-latest-meta">• {{ $p.Date.Format "Jan 2, 2006" }}</div>
+				</div>
+				{{ end }}
+			</div>
+		</aside>
+	</div>
+</main>
+
+{{ end }}
