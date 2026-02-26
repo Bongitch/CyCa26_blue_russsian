@@ -4,7 +4,7 @@ title: Why Are We Even Dying Here?
 authors:
   - Alexandr Popov
 tags:
-  - Frontlines-Letters
+  - Frontline-Letters
 date: 2026-02-18T14:50:19+01:00
 image: /images/zakop.jpg
 ---
