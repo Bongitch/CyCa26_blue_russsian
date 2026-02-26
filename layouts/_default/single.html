@@ -34,12 +34,12 @@ Single post layout (Entrepreneur-like article layout)
 				<div class="article-meta">
 					{{ with .Params.authors }}
 					<div class="article-byline">
-						BY <a class="article-byline-name" href="{{ "/authors/" | relURL }}{{ index . 0 | urlize }}">{{ upper (index . 0) }}</a>
+						АВТОР: <a class="article-byline-name" href="{{ "/authors/" | relURL }}{{ index . 0 | urlize }}">{{ upper (index . 0) }}</a>
 					</div>
 					{{ end }}
 
 					<div class="article-date">
-						{{ .Date.Format "Jan 2, 2006" }}
+						{{ .Date.Format "02.01.2006" }}
 					</div>
 				</div>
 			</header>
@@ -74,7 +74,7 @@ Single post layout (Entrepreneur-like article layout)
 				{{ range $i, $p := $latestPosts }}
 				<div class="article-latest-item {{ if gt $i 0 }}border-top{{ end }}">
 					<a class="article-latest-link title-font" href="{{ $p.Permalink }}">{{ $p.Title }}</a>
-					<div class="article-latest-meta">• {{ $p.Date.Format "Jan 2, 2006" }}</div>
+					<div class="article-latest-meta">• {{ $p.Date.Format "02.01.2006" }}</div>
 				</div>
 				{{ end }}
 			</div>
