@@ -25,12 +25,17 @@
 
     {{ $popularTag1 := "" }}
     {{ $popularTag2 := "" }}
+    {{ $popularTag3 := "" }}
     {{ if ge (len $sortedTags) 1 }}
         {{ $popularTag1 = (index $sortedTags 0).name }}
     {{ end }}
     {{ if ge (len $sortedTags) 2 }}
         {{ $popularTag2 = (index $sortedTags 1).name }}
     {{ end }}
+    {{ if ge (len $sortedTags) 3 }}
+        {{ $popularTag3 = (index $sortedTags 2).name }}
+    {{ end }}
+    {{ $allTaxonomyTags := .Site.Taxonomies.tags }}
 
     {{/* ------------------------------------------------------------------ */}}
     {{/* Feature section: 1 large hero + 2 medium articles side-by-side    */}}
@@ -42,7 +47,7 @@
         <div class="row g-4 align-items-stretch">
 
             {{/* Main hero card — wider left column */}}
-            <div class="col-12 col-lg-7">
+            <div class="col-12 col-lg-8">
                 {{ range $heroPost }}
                 <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none h-100">
                     <article class="home-hero-card h-100">
@@ -76,7 +81,7 @@
             </div>
 
             {{/* 2 medium articles stacked in right column */}}
-            <div class="col-12 col-lg-5">
+            <div class="col-12 col-lg-4">
                 <div class="row g-4 h-100">
                     {{ range $sideArticles }}
                     <div class="col-12 col-md-6 col-lg-12">
@@ -96,7 +101,8 @@
                                     <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
                                     {{ end }}
                                     <h2 class="title-font home-tile-title mb-1">{{ .Title }}</h2>
-                                    <p class="home-tile-meta text-body-secondary mb-0">{{ .Date.Format "January 2, 2006" }}</p>
+                                    <p class="home-tile-meta text-body-secondary mb-2">{{ .Date.Format "January 2, 2006" }}</p>
+                                    <p class="home-tile-excerpt">{{ .Summary | plainify }}</p>
                                 </div>
                             </article>
                         </a>
@@ -109,61 +115,32 @@
     </section>
 
     {{/* ------------------------------------------------------------------ */}}
-    {{/* Tag sections: 2 most popular tags                                   */}}
-    {{/* Each section: 1 full-width lead card + 3 tiles beneath              */}}
+    {{/* Tag columns: 3 most popular tags, each with 3 newest articles      */}}
     {{/* ------------------------------------------------------------------ */}}
 
-    {{ range $idx, $tag := slice $popularTag1 $popularTag2 }}
-    {{ if $tag }}
-
-    {{ $tagPosts := first 4 ((where $allPosts "Params.tags" "intersect" (slice $tag)).ByDate.Reverse) }}
-    {{ $tagLead  := first 1 $tagPosts }}
-    {{ $tagRest  := after 1 $tagPosts }}
-
     <section class="home-section mt-5">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <a href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" class="home-section-title-link text-decoration-none">
-                <h2 class="home-section-title title-font mb-0">{{ $tag | humanize | title }}</h2>
-            </a>
-            <a class="home-section-arrow" href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" aria-label="View more"></a>
-        </div>
+        <div class="row g-4">
 
-        {{/* Lead card — full-width */}}
-        {{ range $tagLead }}
-        <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none">
-            <article class="home-hero-card">
-                {{ if .Params.image }}
-                {{ $imagePath := .Params.image }}
-                {{ $fileNameWithExt := path.Base $imagePath }}
-                {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
-                <div class="home-hero-media">
-                    <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
-                </div>
-                {{ end }}
+        {{ range $idx, $tag := slice $popularTag1 $popularTag2 $popularTag3 }}
+        {{ if $tag }}
+        {{ $tagTaxonomy := index $allTaxonomyTags $tag }}
+        {{ $tagPosts := first 3 ($tagTaxonomy.Pages.ByDate.Reverse) }}
 
-                <div class="home-hero-body p-4 p-md-5">
-                    <div class="home-kicker mb-2">{{ upper $tag }}</div>
+        <div class="col-12 col-md-6 col-lg-4">
 
-                    <h2 class="home-hero-title title-font mb-3">{{ .Title }}</h2>
+            {{/* Column header */}}
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <a href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" class="home-section-title-link text-decoration-none">
+                    <h2 class="home-section-title title-font mb-0">{{ $tag | humanize | title }}</h2>
+                </a>
+                <a class="home-section-arrow" href="{{ "/tags/" | relURL }}{{ $tag | urlize }}" aria-label="View more"></a>
+            </div>
 
-                    <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
-
-                    <p class="home-hero-excerpt">
-                        {{ .Summary | plainify }}
-                    </p>
-
-                    <span class="home-feature-desc-link">Читать далее →</span>
-                </div>
-            </article>
-        </a>
-        {{ end }}
-
-        {{/* 3 tiles beneath */}}
-        <div class="row g-4 mt-3">
-            {{ range $tagRest }}
-            <div class="col-12 col-md-6 col-lg-4">
-                <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block h-100">
-                    <article class="home-tile h-100">
+            {{/* 3 article tiles stacked */}}
+            <div class="d-flex flex-column gap-3">
+                {{ range $tagPosts }}
+                <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block">
+                    <article class="home-tile">
                         {{ if .Params.image }}
                         {{ $imagePath := .Params.image }}
                         {{ $fileNameWithExt := path.Base $imagePath }}
@@ -174,18 +151,22 @@
                         {{ end }}
 
                         <div class="home-tile-body pt-3 px-3 pb-3">
-                            <div class="home-kicker mb-2">{{ upper $tag }}</div>
-                            <h3 class="title-font home-tile-title mb-0">{{ .Title }}</h3>
+                            <div class="home-kicker mb-1">{{ upper $tag }}</div>
+                            <h3 class="title-font home-tile-title mb-1">{{ .Title }}</h3>
+                            <p class="home-tile-meta text-body-secondary mb-2">{{ .Date.Format "January 2, 2006" }}</p>
+                            <p class="home-tile-excerpt">{{ .Summary | plainify }}</p>
                         </div>
                     </article>
                 </a>
+                {{ end }}
             </div>
-            {{ end }}
+
+        </div>
+        {{ end }}
+        {{ end }}
+
         </div>
     </section>
-
-    {{ end }}
-    {{ end }}
 
 </main>
 {{ end }}
