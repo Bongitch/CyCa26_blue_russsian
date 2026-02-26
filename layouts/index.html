@@ -33,77 +33,80 @@
     {{ end }}
 
     {{/* ------------------------------------------------------------------ */}}
-    {{/* Hero section: full-width featured post                              */}}
+    {{/* Feature section: 1 large hero + 2 medium articles side-by-side    */}}
     {{/* ------------------------------------------------------------------ */}}
-    {{ $heroPost := first 1 ($allPosts.ByDate.Reverse) }}
+    {{ $heroPost    := first 1 ($allPosts.ByDate.Reverse) }}
+    {{ $sideArticles := after 1 (first 3 ($allPosts.ByDate.Reverse)) }}
 
-    <section class="home-hero-section mb-5">
-        {{ range $heroPost }}
-        <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none">
-            <article class="home-hero-card">
-                {{ if .Params.image }}
-                {{ $imagePath := .Params.image }}
-                {{ $fileNameWithExt := path.Base $imagePath }}
-                {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
-                <div class="home-hero-media">
-                    <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
-                </div>
-                {{ end }}
+    <section class="home-feature-section mb-5">
+        <div class="row g-4 align-items-stretch">
 
-                <div class="home-hero-body p-4 p-md-5">
-                    {{ with .Params.tags }}
-                    <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
-                    {{ end }}
-
-                    <h1 class="home-hero-title title-font mb-3">{{ .Title }}</h1>
-
-                    <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
-
-                    <p class="home-hero-excerpt">
-                        {{ .Summary | plainify }}
-                    </p>
-
-                    <span class="home-feature-desc-link">Читать далее →</span>
-                </div>
-            </article>
-        </a>
-        {{ end }}
-    </section>
-
-    {{/* ------------------------------------------------------------------ */}}
-    {{/* 2-column grid: next 4 most recent posts (after hero)               */}}
-    {{/* ------------------------------------------------------------------ */}}
-    {{ $recentGrid := after 1 (first 5 ($allPosts.ByDate.Reverse)) }}
-    {{ if $recentGrid }}
-    <section class="home-grid-section mb-5">
-        <div class="row g-4">
-            {{ range $recentGrid }}
-            <div class="col-12 col-md-6">
-                <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block h-100">
-                    <article class="home-tile h-100">
+            {{/* Main hero card — wider left column */}}
+            <div class="col-12 col-lg-7">
+                {{ range $heroPost }}
+                <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none h-100">
+                    <article class="home-hero-card h-100">
                         {{ if .Params.image }}
                         {{ $imagePath := .Params.image }}
                         {{ $fileNameWithExt := path.Base $imagePath }}
                         {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
-                        <div class="home-tile-media">
+                        <div class="home-hero-media">
                             <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
                         </div>
                         {{ end }}
 
-                        <div class="home-tile-body pt-3 px-3 pb-3">
+                        <div class="home-hero-body p-4 p-md-5">
                             {{ with .Params.tags }}
                             <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
                             {{ end }}
-                            <h2 class="title-font home-tile-title mb-1">{{ .Title }}</h2>
-                            <p class="home-tile-meta text-body-secondary mb-0">{{ .Date.Format "January 2, 2006" }}</p>
+
+                            <h1 class="home-hero-title title-font mb-3">{{ .Title }}</h1>
+
+                            <p class="mt-2 text-body-secondary">{{ .Date.Format "January 2, 2006" }}</p>
+
+                            <p class="home-hero-excerpt">
+                                {{ .Summary | plainify }}
+                            </p>
+
+                            <span class="home-feature-desc-link">Читать далее →</span>
                         </div>
                     </article>
                 </a>
+                {{ end }}
             </div>
-            {{ end }}
+
+            {{/* 2 medium articles stacked in right column */}}
+            <div class="col-12 col-lg-5">
+                <div class="row g-4 h-100">
+                    {{ range $sideArticles }}
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block h-100">
+                            <article class="home-tile h-100">
+                                {{ if .Params.image }}
+                                {{ $imagePath := .Params.image }}
+                                {{ $fileNameWithExt := path.Base $imagePath }}
+                                {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                                <div class="home-tile-media">
+                                    <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
+                                </div>
+                                {{ end }}
+
+                                <div class="home-tile-body pt-3 px-3 pb-3">
+                                    {{ with .Params.tags }}
+                                    <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
+                                    {{ end }}
+                                    <h2 class="title-font home-tile-title mb-1">{{ .Title }}</h2>
+                                    <p class="home-tile-meta text-body-secondary mb-0">{{ .Date.Format "January 2, 2006" }}</p>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+
         </div>
     </section>
-    {{ end }}
 
     {{/* ------------------------------------------------------------------ */}}
     {{/* Tag sections: 2 most popular tags                                   */}}
