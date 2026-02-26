@@ -1,4 +1,6 @@
-title = "Letters from War"
+title = "Письма с войны"
+languageCode = "ru"
+defaultContentLanguage = "ru"
 
 [taxonomies]
   tag   =  "tags"
@@ -7,19 +9,19 @@ title = "Letters from War"
 [menu]
   [[menu.main]]
     identifier = "home"
-    name = "Home"
+    name = "Главная"
     url = "/"
     weight = 10
 
   [[menu.main]]
     identifier = "about"
-    name = "About"
+    name = "О нас"
     url = "/about"
     weight = 20
 
   [[menu.main]]
     identifier = "posts"
-    name = "Posts"
+    name = "Публикации"
     url = "/posts"
     weight = 30
 

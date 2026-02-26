@@ -1,15 +1,10 @@
 ---
 title: Lorem ipsum
 authors:
-  - Yasuo Hasagi
+  - Alexandr Popov
 tags:
   - loremipsum
   - general
-  - deadlanguages
-  - idk
-  - moretags
-  - evenmoretags
-  - ineedmoretags
 date: 2024-12-10T10:49:34+01:00
 image: /images/img2.webp
 ---

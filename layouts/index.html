@@ -47,7 +47,7 @@
 
         <!-- Latest sidebar -->
         <aside class="col-lg-3 order-2 order-lg-1">
-            <h2 class="home-latest-title title-font mb-2">Latest</h2>
+            <h2 class="home-latest-title title-font mb-2">Последние</h2>
             <ul class="list-unstyled mb-0 home-latest">
                 {{ $latest := first 7 ($allPosts.ByDate.Reverse) }}
                 {{ range $i, $p := $latest }}
@@ -89,7 +89,7 @@
                             {{ .Summary | plainify }}
                         </p>
 
-                        <span class="home-feature-desc-link">Read more →</span>
+                        <span class="home-feature-desc-link">Читать далее →</span>
                     </div>
                 </article>
             </a>
@@ -142,7 +142,7 @@
                         {{ .Summary | plainify }}
                     </p>
 
-                    <span class="home-feature-desc-link">Read more →</span>
+                    <span class="home-feature-desc-link">Читать далее →</span>
                 </div>
             </article>
         </a>

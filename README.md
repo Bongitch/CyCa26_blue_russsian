@@ -1,291 +1,288 @@
-# Blog Content Guide
+# Руководство по контенту блога
 
-This guide explains how to add and manage content in your blog. Follow these instructions to create blog posts and author profiles.
+Это руководство объясняет, как добавлять и управлять контентом в блоге «Письма с войны». Следуйте этим инструкциям, чтобы создавать публикации и профили авторов.
 
-## Quick Start
+## Быстрый старт
 
-1. Create your blog post file in `content/posts/`
-2. Add the required frontmatter at the top
-3. Write your content in Markdown
-4. Create an author profile in `content/authors/` if needed
-5. Add images to `static/images/`
+1. Создайте файл публикации в `content/posts/`
+2. Добавьте обязательные метаданные (frontmatter) в начало файла
+3. Напишите контент в формате Markdown
+4. Создайте профиль автора в `content/authors/`, если необходимо
+5. Добавьте изображения в `static/images/`
 
-## Adding Blog Posts
+## Добавление публикаций
 
-Blog posts are stored in the `content/posts/` directory. Each post is a Markdown file with frontmatter at the top.
+Публикации хранятся в директории `content/posts/`. Каждая публикация — это файл Markdown с метаданными в начале.
 
-### File Naming
+### Именование файлов
 
-File names must be lowercase with hyphens separating words.
+Имена файлов должны быть строчными с дефисами между словами.
 
-**Correct:**
-- `my-first-post.md`
-- `introduction-to-hugo.md`
-- `summer-vacation-2024.md`
+**Правильно:**
+- `moya-pervaya-publikaciya.md`
+- `vvedenie-v-hugo.md`
+- `leto-2024.md`
 
-**Incorrect:**
-- `My First Post.md` (spaces, not lowercase)
-- `my_first_post.md` (underscores instead of hyphens)
-- `MyFirstPost.md` (not lowercase)
+**Неправильно:**
+- `Моя Первая Публикация.md` (пробелы, не строчные)
+- `moya_pervaya_publikaciya.md` (подчёркивания вместо дефисов)
+- `MoyaPervajaPublikaciya.md` (не строчные)
 
-### Required Frontmatter
+### Обязательные метаданные
 
-Every blog post must start with frontmatter between `---` markers. Include these fields:
+Каждая публикация должна начинаться с метаданных между маркерами `---`. Включите эти поля:
 
 ```yaml
 ---
-title: Your Post Title
+title: Заголовок публикации
 authors:
-  - Author Name
+  - Имя Автора
 tags:
-  - tag1
-  - tag2
+  - тег1
+  - тег2
 date: 2024-12-11T14:46:25+01:00
 image: /images/your-image.jpg
 ---
 ```
 
-**Field Descriptions:**
+**Описание полей:**
 
-- `title`: The title of your post (can include spaces and capitals)
-- `authors`: List of author names (must match author profile names exactly)
-- `tags`: List of tags for categorizing your post
-- `date`: Publication date in ISO 8601 format (YYYY-MM-DDTHH:MM:SS+TZ:TZ)
-- `image`: Path to header image (always starts with `/images/`)
+- `title`: Заголовок публикации (может содержать пробелы и заглавные буквы)
+- `authors`: Список авторов (должен точно совпадать с именами в профилях авторов)
+- `tags`: Список тегов для категоризации
+- `date`: Дата публикации в формате ISO 8601 (YYYY-MM-DDTHH:MM:SS+TZ:TZ)
+- `image`: Путь к изображению заголовка (всегда начинается с `/images/`)
 
-### Date Format
+### Формат даты
 
-Dates must follow the ISO 8601 format with timezone:
+Даты должны соответствовать формату ISO 8601 с указанием временной зоны:
 
-**Correct:**
+**Правильно:**
 ```yaml
 date: 2024-12-11T14:46:25+01:00
 date: 2024-01-15T09:30:00+01:00
 date: 2024-06-20T18:00:00+02:00
 ```
 
-**Incorrect:**
+**Неправильно:**
 ```yaml
 date: 12/11/2024
-date: December 11, 2024
+date: 11 декабря 2024
 date: 2024-12-11
 ```
 
-The format is: `YYYY-MM-DDTHH:MM:SS+HH:MM`
-- Year-Month-Day
-- T separator
-- Hour:Minute:Second (24-hour format)
-- Timezone offset
+Формат: `YYYY-MM-DDTHH:MM:SS+HH:MM`
+- Год-Месяц-День
+- Разделитель T
+- Часы:Минуты:Секунды (24-часовой формат)
+- Смещение временной зоны
 
-### Draft Posts
+### Черновики
 
-To create a draft post that will not be published, add the `draft` field:
+Чтобы создать черновик публикации, которая не будет опубликована, добавьте поле `draft`:
 
 ```yaml
 ---
-title: Work in Progress
+title: В работе
 draft: true
 authors:
-  - Your Name
+  - Ваше Имя
 tags:
-  - draft
+  - черновик
 date: 2024-12-11T14:46:25+01:00
 image: /images/placeholder.jpg
 ---
 ```
 
-## Creating Author Profiles
+## Создание профилей авторов
 
-Author profiles are stored in `content/authors/`. Each author needs a profile file before they can be listed as a post author.
+Профили авторов хранятся в `content/authors/`. Каждый автор должен иметь профиль, прежде чем его можно будет указать в публикации.
 
-### File Naming
+### Именование файлов
 
-Author profile file names should match the author's name in lowercase with hyphens.
+Имена файлов профилей авторов должны соответствовать имени автора в нижнем регистре с дефисами.
 
-**Example:**
-- Author name: `Jan Novák`
-- File name: `jan-novák.md`
+**Пример:**
+- Имя автора: `Иван Петров`
+- Имя файла: `ivan-petrov.md`
 
-### Author Profile Structure
+### Структура профиля автора
 
 ```yaml
 ---
-name: Full Name
-description: Brief biography of the author. Can be multiple sentences.
-  This field supports line breaks.
-avatar: /images/author-photo.jpg
+name: Полное Имя
+description: Краткая биография автора. Может содержать несколько предложений.
+avatar: /images/photo-author.jpg
 date: 2024-12-11T13:57:13+01:00
 ---
 ```
 
-**Field Descriptions:**
+**Описание полей:**
 
-- `name`: Full name as it will appear on posts (must match exactly in post frontmatter)
-- `description`: Author biography or description
-- `avatar`: Path to author photo (optional, starts with `/images/`)
-- `date`: Profile creation date in ISO 8601 format
+- `name`: Полное имя (должно точно совпадать с указанием в метаданных публикаций)
+- `description`: Биография или описание автора
+- `avatar`: Путь к фотографии автора (необязательно, начинается с `/images/`)
+- `date`: Дата создания профиля в формате ISO 8601
 
-## Images
+## Изображения
 
-### Adding Images
+### Добавление изображений
 
-1. Place image files in the `static/images/` directory
-2. Reference them in your post or author profile with `/images/filename.ext`
+1. Поместите файлы изображений в директорию `static/images/`
+2. Ссылайтесь на них в публикациях или профилях авторов как `/images/filename.ext`
 
-**Supported formats:**
+**Поддерживаемые форматы:**
 - `.jpg`, `.jpeg`
 - `.png`
 - `.webp`
 
-### Image References
+### Ссылки на изображения
 
-**In blog posts:**
+**В публикациях:**
 ```yaml
 image: /images/header-photo.jpg
 ```
 
-**In author profiles:**
+**В профилях авторов:**
 ```yaml
 avatar: /images/author-name.jpg
 ```
 
-**In post content:**
+**В тексте публикации:**
 ```markdown
-![Alt text](/images/inline-photo.jpg)
+![Описание](/images/inline-photo.jpg)
 ```
 
-## Common Mistakes
+## Типичные ошибки
 
-### ✓ Correct vs ✗ Incorrect
+### ✓ Правильно vs ✗ Неправильно
 
-**File Names:**
+**Имена файлов:**
 
-✓ `my-blog-post.md`  
-✗ `My Blog Post.md` (contains spaces)
+✓ `moya-publikaciya.md`  
+✗ `Моя Публикация.md` (содержит пробелы)
 
-✓ `summer-vacation-2024.md`  
-✗ `summer_vacation_2024.md` (uses underscores)
+✓ `leto-2024.md`  
+✗ `leto_2024.md` (используются подчёркивания)
 
-✓ `introduction-to-hugo.md`  
-✗ `IntroductionToHugo.md` (not lowercase)
+**Имена авторов:**
 
-**Author Names:**
-
-✓ Match exactly:
+✓ Точное совпадение:
 ```yaml
-# In author profile (petr-novák.md):
-name: Petr Novák
+# В профиле автора (ivan-petrov.md):
+name: Иван Петров
 
-# In blog post:
+# В публикации:
 authors:
-  - Petr Novák
+  - Иван Петров
 ```
 
-✗ Mismatch causes broken links:
+✗ Несовпадение приводит к ошибкам:
 ```yaml
-# In author profile:
-name: Petr Novák
+# В профиле автора:
+name: Иван Петров
 
-# In blog post:
+# В публикации:
 authors:
-  - Petr Novak  # Missing diacritics
+  - Иван Петровъ  # Лишний символ
 ```
 
-**Image Paths:**
+**Пути к изображениям:**
 
-✓ `image: /images/photo.jpg` (starts with `/images/`)  
-✗ `image: images/photo.jpg` (missing leading slash)
+✓ `image: /images/photo.jpg` (начинается с `/images/`)  
+✗ `image: images/photo.jpg` (нет ведущего слэша)
 
-✗ `image: /static/images/photo.jpg` (includes 'static' in path)
+✗ `image: /static/images/photo.jpg` (включает 'static' в путь)
 
-**Quotes in Frontmatter:**
+**Кавычки в метаданных:**
 
-✓ Use straight quotes:
+✓ Используйте прямые кавычки:
 ```yaml
-title: My "awesome" post
+title: Мой "замечательный" пост
 ```
 
-✗ Smart quotes break parsing:
+✗ Типографские кавычки ломают парсинг:
 ```yaml
-title: My "awesome" post
+title: Мой "замечательный" пост
 ```
 
-**Date Format:**
+**Формат даты:**
 
 ✓ `date: 2024-12-11T14:46:25+01:00`  
 ✗ `date: 12/11/2024`  
-✗ `date: December 11, 2024`
+✗ `date: 11 декабря 2024`
 
-**Missing Author Profile:**
+**Отсутствующий профиль автора:**
 
-✗ Post references author without profile:
+✗ Публикация ссылается на автора без профиля:
 ```yaml
-# Blog post:
+# В публикации:
 authors:
-  - John Doe  # No john-doe.md exists in content/authors/
+  - Иван Иванов  # Файл ivan-ivanov.md отсутствует в content/authors/
 ```
 
-This will cause the post to display incorrectly. Always create the author profile first.
+Это приведёт к некорректному отображению публикации. Всегда сначала создавайте профиль автора.
 
-**Tags Format:**
+**Формат тегов:**
 
-✓ Use list format (consistent with existing posts):
+✓ Используйте формат списка:
 ```yaml
 tags:
-  - general
-  - tutorial
+  - война
+  - письма
 ```
 
-## Post Content
+## Содержание публикации
 
-After the frontmatter, write your post content in Markdown:
+После метаданных напишите содержание публикации в формате Markdown:
 
 ```markdown
 ---
-title: My Post
+title: Моя публикация
 authors:
-  - Author Name
+  - Имя Автора
 tags:
-  - general
+  - война
 date: 2024-12-11T14:46:25+01:00
 image: /images/header.jpg
 ---
 
-# Main Heading
+# Основной заголовок
 
-Your post content goes here. Use standard Markdown formatting:
+Здесь идёт содержание публикации. Используйте стандартное форматирование Markdown:
 
-- **Bold text**
-- *Italic text*
-- [Links](https://example.com)
-- Lists and more
+- **Жирный текст**
+- *Курсив*
+- [Ссылки](https://example.com)
+- Списки и многое другое
 
-## Subheadings
+## Подзаголовки
 
-Add more sections as needed.
+Добавляйте разделы по мере необходимости.
 ```
 
-## Checklist for New Posts
+## Чек-лист для новых публикаций
 
-Before publishing a post, verify:
+Перед публикацией проверьте:
 
-- [ ] File name is lowercase with hyphens
-- [ ] Frontmatter includes all required fields (title, authors, tags, date, image)
-- [ ] Date is in ISO 8601 format
-- [ ] Author profile exists in `content/authors/`
-- [ ] Author name matches profile exactly
-- [ ] Image file exists in `static/images/`
-- [ ] Image path starts with `/images/`
-- [ ] No smart quotes in frontmatter
-- [ ] Tags use list format (not inline)
+- [ ] Имя файла строчное с дефисами
+- [ ] Метаданные содержат все обязательные поля (title, authors, tags, date, image)
+- [ ] Дата в формате ISO 8601
+- [ ] Профиль автора существует в `content/authors/`
+- [ ] Имя автора точно совпадает с профилем
+- [ ] Файл изображения существует в `static/images/`
+- [ ] Путь к изображению начинается с `/images/`
+- [ ] Нет типографских кавычек в метаданных
+- [ ] Теги используют формат списка
 
-## Need Help?
+## Нужна помощь?
 
-If your post is not displaying correctly:
+Если публикация отображается некорректно:
 
-1. Check that the author profile file exists
-2. Verify author name matches exactly (including diacritics)
-3. Confirm image path starts with `/images/`
-4. Validate date format follows ISO 8601
-5. Look for smart quotes in frontmatter and replace with straight quotes
-6. Ensure file name is lowercase with hyphens
+1. Проверьте, существует ли файл профиля автора
+2. Убедитесь, что имя автора точно совпадает (включая дефисы и регистр)
+3. Убедитесь, что путь к изображению начинается с `/images/`
+4. Проверьте формат даты — он должен соответствовать ISO 8601
+5. Найдите типографские кавычки в метаданных и замените на прямые
+6. Убедитесь, что имя файла строчное с дефисами
+

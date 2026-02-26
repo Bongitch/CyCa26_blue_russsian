@@ -1,13 +1,13 @@
 ---
 featured_posts:
   - rank: 1
-    post: Lorem ipsum
+    post: My Andryusha Will Never Come Back
   - rank: 2
-    post: Eighth post
+    post: Notes of Dmitry
   - rank: 3
-    post: CocaCola
+    post: Silence After Artyom
   - rank: 4
-    post: My testing post
+    post: Why Are We Even Dying Here?
 
 homepage_tag1: war
 homepage_tag2: general
