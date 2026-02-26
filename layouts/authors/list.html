@@ -10,7 +10,7 @@
   {{ if eq .RelPermalink "/authors/"}}
     <div class="row justify-content-center text-font">
       <form class="d-flex m-4 mb-6 col-4" id="search-author-form">
-        <input class="form-control me-2" id="search-author-query" data-role="search-author" type="search" placeholder="Search author..." aria-label="Search">
+        <input class="form-control me-2" id="search-author-query" data-role="search-author" type="search" placeholder="Поиск автора..." aria-label="Поиск">
       </form>
     </div>
 
@@ -61,7 +61,7 @@
                 <h3 class="mb-0">
                   <a class="icon-link gap-1 icon-link-hover stretched-link" href="{{ "authors/" | relURL }}{{ .name | urlize }}">{{ .name }}</a>
                 </h3>
-                <strong class="mt-1">Published posts: {{ .count }}</strong>
+                <strong class="mt-1">Опубликованных постов: {{ .count }}</strong>
                 <p class="post-description-truncation">
                   {{ range where $.Site.RegularPages "Type" "authors" }}
                     {{ if in .Params.name $authorName }}
