@@ -37,33 +37,15 @@
     {{ end }}
 
     {{/* ------------------------------------------------------------------ */}}
-    {{/* Hero row: Latest list (left) + most recent post hero card (right)  */}}
+    {{/* Hero row: 1 large main article (left) + 2 secondary articles (right) */}}
     {{/* ------------------------------------------------------------------ */}}
     {{ $heroPost := first 1 ($allPosts.ByDate.Reverse) }}
-    {{ $heroTitle := "" }}
-    {{ range $heroPost }}{{ $heroTitle = .Title }}{{ end }}
+    {{ $secondaryPosts := first 2 (after 1 ($allPosts.ByDate.Reverse)) }}
 
     <div class="row g-4 align-items-start home-hero-row">
 
-        <!-- Latest sidebar -->
-        <aside class="col-lg-3 order-2 order-lg-1">
-            <h2 class="home-latest-title title-font mb-2">Последние</h2>
-            <ul class="list-unstyled mb-0 home-latest">
-                {{ $latest := first 7 ($allPosts.ByDate.Reverse) }}
-                {{ range $i, $p := $latest }}
-                <li class="home-latest-item py-3 {{ if gt $i 0 }}border-top{{ end }}">
-                    {{ with $p.Params.tags }}
-                    <div class="home-kicker">{{ upper (index . 0) }}</div>
-                    {{ end }}
-                    <a href="{{ $p.Permalink }}" class="home-latest-link title-font">{{ $p.Title }}</a>
-                    <div class="home-latest-meta">• {{ $p.Date.Format "Jan 2, 2006" }}</div>
-                </li>
-                {{ end }}
-            </ul>
-        </aside>
-
-        <!-- Hero card -->
-        <section class="col-lg-9 order-1 order-lg-2">
+        <!-- Main hero card -->
+        <section class="col-lg-8">
             {{ range $heroPost }}
             <a href="{{ .Permalink }}" class="home-hero-link d-block text-decoration-none">
                 <article class="home-hero-card">
@@ -95,6 +77,34 @@
             </a>
             {{ end }}
         </section>
+
+        <!-- 2 secondary articles -->
+        <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4">
+                {{ range $secondaryPosts }}
+                <a href="{{ .Permalink }}" class="home-tile-link text-decoration-none d-block">
+                    <article class="home-tile">
+                        {{ if .Params.image }}
+                        {{ $imagePath := .Params.image }}
+                        {{ $fileNameWithExt := path.Base $imagePath }}
+                        {{ $fileName := replace $fileNameWithExt (path.Ext $fileNameWithExt) "" }}
+                        <div class="home-tile-media">
+                            <img src="{{ .Params.image }}" alt="{{ $fileName }}" class="img-fluid w-100">
+                        </div>
+                        {{ end }}
+
+                        <div class="home-tile-body pt-3 px-3 pb-3">
+                            {{ with .Params.tags }}
+                            <div class="home-kicker mb-2">{{ upper (index . 0) }}</div>
+                            {{ end }}
+                            <h2 class="title-font home-tile-title mb-2">{{ .Title }}</h2>
+                            <p class="mt-1 text-body-secondary" style="font-size:0.85rem;">{{ .Date.Format "January 2, 2006" }}</p>
+                        </div>
+                    </article>
+                </a>
+                {{ end }}
+            </div>
+        </div>
 
     </div>
 
