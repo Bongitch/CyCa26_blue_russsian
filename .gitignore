@@ -1,6 +1,7 @@
 *.idea
 *./node_modules
 ./public
+public/
 package.json
 package-lock.json
 .hugo_build.lock
